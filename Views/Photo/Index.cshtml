@@ -3,9 +3,106 @@
     ViewData["Title"] = "Image Transformer";
 }
 
+    <script>
+        function showRotBox(cbox) {
+            if (cbox.checked) {
+                var input = document.createElement("input");
+                input.type = "number";
+                input.min = "-360";
+                input.max = "360";
+                var div = document.createElement("div");
+                div.id = cbox.name;
+                div.innerHTML = "Rotate (Degrees)";
+                div.appendChild(input);
+                document.getElementById("insertinputs1").appendChild(div);
+            } else {
+                document.getElementById(cbox.name).remove();
+            }
+        }
+        function showResBox(cbox) {
+            if (cbox.checked) {
+                var inputX = document.createElement("input");
+                inputX.type = "number";
+                inputX.min = "0";
+                inputX.max = "999";
+                var inputY = document.createElement("input");
+                inputY.type = "number";
+                inputY.min = "0";
+                inputY.max = "999";
+                var div = document.createElement("div");
+                div.id = cbox.name;
+                div.innerHTML += "Resize X Y (Pixels)" + inputX.outerHTML + inputY.outerHTML;
+                document.getElementById("insertinputs2").appendChild(div);
+            } else {
+                document.getElementById(cbox.name).remove();
+            }
+        }
+        function encodeImageFileAsURL(element) {
+            var file = element.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                console.log('RESULT', reader.result)
+            }
+            reader.readAsDataURL(file);
+        }
+        function submitForm(formEl) {
+            //var resultElement = formEl.elements.namedItem("result");
+            var returnArray = {};
+            for (var i = 0; i < Instructions.length; i++) {
+                returnArray[Instructions[i]['name']] = Instruction[i]['value'];
+            }
+            console.log($(this).serializeArray());
+            var stringarray = returnArray.serializeArray();
+            var formFields = { Instructions: stringarray, Image = photoForm.imageForm }
+            //var formData = JSON.stringify(formFields);
+
+            var url =
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onload = function (e) {
+                formEl.elements.namedItem("result").value = this.response;
+            };
+            xmlhttp.open("post", formEl.action);
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send(JSON.stringify(formFields));
+
+            /**
+            try {
+                const response = await fetch(formEl.action, {
+                    method: 'POST',
+                    body: formFields
+                });
+                if (response.ok) {
+                    window.location.href = '/';
+                }
+                resultElement.value = 'Result: ' + response.status + ' ' + response.statusText;
+            }
+            catch (error) {
+                console.error('Error:', error);
+            }
+            */
+
+            /**
+            jQuery.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'contentType': "application/json",
+                },
+                        'type': "POST",
+                        'url': "/api/Photo",
+                        'dataType': "json",
+                        'data': System.Text.JSON.stringify(formFields),
+                        'success': function (data) { result = data; },
+                        'failure': function (errMsg) {
+                            alert(errMsg);
+                        }
+                    });
+            return result;
+            */
+        }
+    </script>
 <h1>ImageView</h1>
 <div>
-    <form method="post" asp-action="UploadImage" name="photoForm">
+    <form method="post" asp-controller="Photo" asp-action="UploadImage" name="photoForm" onsubmit="submitForm(this)">
         <div class="imageForm" name = "imageForm">
             <div class="col-md-10">
                 <p>Select your Image:</p>
@@ -35,10 +132,13 @@
               </div>
         <div class="submission">
             <div class="col-md-10">
-                <input type="submit" value="Submit" onclick="submitForm(photoForm);" />
+                <input type="submit" value="Submit" />
             </div>
         </div>
-    </form>
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+</form>
 </div>
 <script>
     function showRotBox(cbox) {
@@ -82,22 +182,59 @@
         }
         reader.readAsDataURL(file);
     }
-    function submitForm(photoForm) {
-        var formFields = {UploadImage.Instructions: photoForm.instructionForm.checked, UploadImage.Image = photoForm.imageForm}
+    function submitForm(formEl) {
+        //var resultElement = formEl.elements.namedItem("result");
+        var returnArray = {};
+        for (var i = 0; i < Instructions.length; i++) {
+            returnArray[Instructions[i]['name']] = Instruction[i]['value'];
+        }
+        console.log($(this).serializeArray());
+        var stringarray = returnArray.serializeArray();
+        var formFields = { Instructions: stringarray, Image = photoForm.imageForm }
         //var formData = JSON.stringify(formFields);
 
+        var url = 
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onload = function (e) {
+            formEl.elements.namedItem("result").value = this.response;
+        };
+        xmlhttp.open("post", formEl.action);
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify(formFields));
+
+        /**
+        try {
+            const response = await fetch(formEl.action, {
+                method: 'POST',
+                body: formFields
+            });
+            if (response.ok) {
+                window.location.href = '/';
+            }
+            resultElement.value = 'Result: ' + response.status + ' ' + response.statusText;
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+        */
+
+        /**
         jQuery.ajax({
-                    type: "POST",
-                    url: "@Url.Action("UploadImage")",
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(formFields),
-                    success: function (data) { alert(data); },
-                    failure: function (errMsg) {
+            headers: {
+                'Accept': 'application/json',
+                'contentType': "application/json",
+            },
+                    'type': "POST",
+                    'url': "/api/Photo",
+                    'dataType': "json",
+                    'data': System.Text.JSON.stringify(formFields),
+                    'success': function (data) { result = data; },
+                    'failure': function (errMsg) {
                         alert(errMsg);
                     }
                 });
-
+        return result;
+        */
     }
 </script>
 

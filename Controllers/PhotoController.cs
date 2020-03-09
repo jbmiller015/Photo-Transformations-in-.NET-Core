@@ -7,25 +7,32 @@ using _5200Final.Models;
 using _5200Final;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ImageMagick;
 using System.Net.Mime;
+using System.Text.Json;
 
 namespace _5200Final.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Photo")]
     [ApiController]
     public class PhotoController : Controller
     {
+        [HttpGet]
         public ViewResult Index() => View();
 
         // POST: api/Photo
         [HttpPost]
-        [Route("api/[controller]/UploadImage")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public FileContentResult UploadImage([FromBody] UploadImage Request)
-        { 
-            Transform photoTransformation = new Transform(Request.Instructions, Request.Image);
-            return File(photoTransformation.getImage(), "image/" + photoTransformation.getFormat());
+        [ProducesResponseType(202)]
+        [ProducesResponseType(400)]
+        public IActionResult UploadImage([FromBody] UploadImage Request)
+        {
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine(Request.ToString());
+                Transform photoTransformation = new Transform(Request.Instructions, Request.Image);
+                return File(photoTransformation.getImage(), "image/" + photoTransformation.getFormat());
+            }
+            else return BadRequest();
         }
     }
 }

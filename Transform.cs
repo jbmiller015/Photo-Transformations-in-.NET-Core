@@ -14,6 +14,7 @@ namespace _5200Final
         private string Format;
         MagickImage Image;
         public Transform(string[] Inst, byte[] ImageData) {
+            Console.WriteLine("In Transform");
             this.Inst = Inst;
             //Not sure if this is needed
             this.ImageData = ImageData;
@@ -35,9 +36,11 @@ namespace _5200Final
             MagickImageInfo info = new MagickImageInfo();
             info.Read(ImageData);
             Format = info.Format.ToString();
+            Console.WriteLine("Analyzing");
         }
         private void ExInst()
         {
+            Console.WriteLine("In Execute");
             if (Inst.Contains<string>("FlipHorizontal") || Inst.Contains<string>("FlipVertical"))
                 Flip();
             if (Inst.Contains<string>("Rotate"))

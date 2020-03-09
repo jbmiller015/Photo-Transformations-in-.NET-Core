@@ -5,14 +5,14 @@
 
 <h1>ImageView</h1>
 <div>
-    <form method="post" asp-action="UploadImage" name="photoform">
-        <div class="imageform">
+    <form method="post" asp-action="UploadImage" name="photoForm">
+        <div class="imageForm" name = "imageForm">
             <div class="col-md-10">
                 <p>Select your Image:</p>
                 <input type="file" name="Image" onchange="encodeImageFileAsURL(this)"/>
             </div>
         </div><br>
-              <div class="custom-checkbox">
+              <div class="custom-checkbox" name = "instructionForm">
                   <p>Select your Transformation(s):</p>
                   <input type="checkbox" name="Instructions[0]" value="FlipHorizontal">
                   <label for="Instructions[0]"> Flip Horizontal</label><br><br>
@@ -35,7 +35,7 @@
               </div>
         <div class="submission">
             <div class="col-md-10">
-                <input type="submit" value="Submit" onclick="submitform()" />
+                <input type="submit" value="Submit" onclick="submitForm(photoForm);" />
             </div>
         </div>
     </form>
@@ -82,9 +82,21 @@
         }
         reader.readAsDataURL(file);
     }
-    function sumbitform() {
-        const formfields = {Instructions: photoform.,Image = photoform.innerHTML}
-        var formData = JSON.stringify($("#photoform").serializeArray());
+    function submitForm(photoForm) {
+        var formFields = {UploadImage.Instructions: photoForm.instructionForm.checked, UploadImage.Image = photoForm.imageForm}
+        //var formData = JSON.stringify(formFields);
+
+        jQuery.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UploadImage")",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(formFields),
+                    success: function (data) { alert(data); },
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
 
     }
 </script>

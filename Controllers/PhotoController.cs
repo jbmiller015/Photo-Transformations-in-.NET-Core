@@ -8,6 +8,7 @@ using _5200Final;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ImageMagick;
+using System.Net.Mime;
 
 namespace _5200Final.Controllers
 {
@@ -15,29 +16,16 @@ namespace _5200Final.Controllers
     [ApiController]
     public class PhotoController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public ViewResult Index() => View();
 
         // POST: api/Photo
         [HttpPost]
+        [Route("api/[controller]/UploadImage")]
+        [Consumes(MediaTypeNames.Application.Json)]
         public FileContentResult UploadImage([FromBody] UploadImage Request)
         { 
             Transform photoTransformation = new Transform(Request.Instructions, Request.Image);
             return File(photoTransformation.getImage(), "image/" + photoTransformation.getFormat());
-        }
-
-        // PUT: api/Photo/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿
+﻿@model UploadImage
 @{
     ViewData["Title"] = "Image Transformer";
 }
 
 <h1>ImageView</h1>
 <div>
-    <form method="post" enctype="application/x-www-form-urlencoded" asp-controller="PhotoController" asp-action="UploadImage">
+    <form method="post" asp-action="UploadImage" name="photoform">
         <div class="imageform">
             <div class="col-md-10">
                 <p>Select your Image:</p>
@@ -35,7 +35,7 @@
               </div>
         <div class="submission">
             <div class="col-md-10">
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Submit" onclick="submitform()" />
             </div>
         </div>
     </form>
@@ -81,6 +81,11 @@
         console.log('RESULT', reader.result)
         }
         reader.readAsDataURL(file);
+    }
+    function sumbitform() {
+        const formfields = {Instructions: photoform.,Image = photoform.innerHTML}
+        var formData = JSON.stringify($("#photoform").serializeArray());
+
     }
 </script>
 

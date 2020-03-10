@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Image Transformer</title>
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+    <div>
+        <form action="javascript:void(0);" method="post" id="photoForm" onsubmit="submitForm();">
+            <div class="imageForm" name="imageForm">
+                <p>Select your Image:</p>
+                <input type="file" id="Image" onchange="encodeImageFileAsURL(this)" />
+            </div>
+            <br>
+            <fieldset>
+                <Legend>Transformation Form</Legend>
+                <p>Select your Transformation(s):</p>
+                <input id="FlipHorizontal" type="checkbox" name="Instructions[0]" value="FlipHorizontal">
+                <label for="Instructions[0]"> Flip Horizontal</label><br><br>
+                <input id="FlipVertical" type="checkbox" name="Instructions[0]" value="FlipVertical">
+                <label for="Instructions[0]"> Flip Vertical</label><br><br>
+                <input id="Rotate" type="checkbox" name="Instructions[0]" value="Rotate" onclick="showRotBox(this);">
+                <label for="Instructions[0]"> Rotate</label><br>
+                <p id="insertinputs1"></p>
+                <input id="Resize" type="checkbox" name="Instructions[0]" value="Resize" onclick="showResBox(this);">
+                <label for="Instructions[0]"> Resize</label><br>
+                <p id="insertinputs2"></p>
+                <input id="GrayScale" type="checkbox" name="Instructions[0]" value="GrayScale">
+                <label for="TInstructions[0]"> GrayScale</label><br><br>
+                <input id="RotateLeft" type="checkbox" name="Instructions[0]" value="RotateLeft">
+                <label for="Instructions[0]"> Rotate Left</label><br><br>
+                <input id="RotateRight" type="checkbox" name="Instructions[0]" value="RotateRight">
+                <label for="Instructions[0]"> Rotate Right</label><br><br>
+                <input id="Thumbnail" type="checkbox" name="Instructions[0]" value="Thumbnail">
+                <label for="Instructions[0]"> Export as Thumbnail</label><br><br>
+            </fieldset>
+            <div class="submission">
+                <input type="submit" value="Submit" />
+            </div>
+        </form>
+        <div style="margin-top:15px">
+            <img id="ItemPreview" src="">
+        </div>
+        <script src="lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="js/site.js" asp-append-version="true"></script>
+    </div>
+    </body>
+</html>
+

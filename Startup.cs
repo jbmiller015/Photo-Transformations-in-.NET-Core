@@ -40,6 +40,9 @@ namespace _5200Final
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+            app.UseDefaultFiles();
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -48,6 +51,9 @@ namespace _5200Final
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "api",
+                    pattern: "api{controller}/{action}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}");

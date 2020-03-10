@@ -16,8 +16,8 @@ namespace _5200Final.Controllers
     [ApiController]
     public class PhotoController : Controller
     {
-        [HttpGet]
-        public ViewResult Index() => View();
+        //[HttpGet]
+        //public ViewResult Index() => View();
 
         // POST: api/Photo
         [HttpPost]

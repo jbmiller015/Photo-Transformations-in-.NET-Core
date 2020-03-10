@@ -3,103 +3,7 @@
     ViewData["Title"] = "Image Transformer";
 }
 
-    <script>
-        function showRotBox(cbox) {
-            if (cbox.checked) {
-                var input = document.createElement("input");
-                input.type = "number";
-                input.min = "-360";
-                input.max = "360";
-                var div = document.createElement("div");
-                div.id = cbox.name;
-                div.innerHTML = "Rotate (Degrees)";
-                div.appendChild(input);
-                document.getElementById("insertinputs1").appendChild(div);
-            } else {
-                document.getElementById(cbox.name).remove();
-            }
-        }
-        function showResBox(cbox) {
-            if (cbox.checked) {
-                var inputX = document.createElement("input");
-                inputX.type = "number";
-                inputX.min = "0";
-                inputX.max = "999";
-                var inputY = document.createElement("input");
-                inputY.type = "number";
-                inputY.min = "0";
-                inputY.max = "999";
-                var div = document.createElement("div");
-                div.id = cbox.name;
-                div.innerHTML += "Resize X Y (Pixels)" + inputX.outerHTML + inputY.outerHTML;
-                document.getElementById("insertinputs2").appendChild(div);
-            } else {
-                document.getElementById(cbox.name).remove();
-            }
-        }
-        function encodeImageFileAsURL(element) {
-            var file = element.files[0];
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                console.log('RESULT', reader.result)
-            }
-            reader.readAsDataURL(file);
-        }
-        function submitForm(formEl) {
-            //var resultElement = formEl.elements.namedItem("result");
-            var returnArray = {};
-            for (var i = 0; i < Instructions.length; i++) {
-                returnArray[Instructions[i]['name']] = Instruction[i]['value'];
-            }
-            console.log($(this).serializeArray());
-            var stringarray = returnArray.serializeArray();
-            var formFields = { Instructions: stringarray, Image = photoForm.imageForm }
-            //var formData = JSON.stringify(formFields);
-
-            var url =
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onload = function (e) {
-                formEl.elements.namedItem("result").value = this.response;
-            };
-            xmlhttp.open("post", formEl.action);
-            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xmlhttp.send(JSON.stringify(formFields));
-
-            /**
-            try {
-                const response = await fetch(formEl.action, {
-                    method: 'POST',
-                    body: formFields
-                });
-                if (response.ok) {
-                    window.location.href = '/';
-                }
-                resultElement.value = 'Result: ' + response.status + ' ' + response.statusText;
-            }
-            catch (error) {
-                console.error('Error:', error);
-            }
-            */
-
-            /**
-            jQuery.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'contentType': "application/json",
-                },
-                        'type': "POST",
-                        'url': "/api/Photo",
-                        'dataType': "json",
-                        'data': System.Text.JSON.stringify(formFields),
-                        'success': function (data) { result = data; },
-                        'failure': function (errMsg) {
-                            alert(errMsg);
-                        }
-                    });
-            return result;
-            */
-        }
-    </script>
+    
 <h1>ImageView</h1>
 <div>
     <form method="post" asp-controller="Photo" asp-action="UploadImage" name="photoForm" onsubmit="submitForm(this)">
@@ -109,7 +13,8 @@
                 <input type="file" name="Image" onchange="encodeImageFileAsURL(this)"/>
             </div>
         </div><br>
-              <div class="custom-checkbox" name = "instructionForm">
+              <fieldset>
+                  <Legend>Transformation Form</Legend>
                   <p>Select your Transformation(s):</p>
                   <input type="checkbox" name="Instructions[0]" value="FlipHorizontal">
                   <label for="Instructions[0]"> Flip Horizontal</label><br><br>
@@ -129,7 +34,7 @@
                   <label for="Instructions[0]"> Rotate Right</label><br><br>
                   <input type="checkbox" name="Instructions[0]" value="Thumbnail">
                   <label for="Instructions[0]"> Export as Thumbnail</label><br><br>
-              </div>
+              </fieldset>
         <div class="submission">
             <div class="col-md-10">
                 <input type="submit" value="Submit" />
@@ -193,7 +98,6 @@
         var formFields = { Instructions: stringarray, Image = photoForm.imageForm }
         //var formData = JSON.stringify(formFields);
 
-        var url = 
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onload = function (e) {
             formEl.elements.namedItem("result").value = this.response;

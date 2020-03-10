@@ -68,11 +68,14 @@ function submitForm() {
             },
             body: JSON.stringify(formFields)
         })
-            .then(response => response.json())
+            .then(response =>
+                response.blob().then(blobResponse => {
+                    data = blobResponse;
+                })
             .then(data => _display(data))
-            .catch(error => console.error('Failed to uplaod', error));
+            .catch(error => console.error('Failed to uplaod', error))
 
-    };
+    }
 function _display(data) {
     document.getElementById("ItemPreview").src = data;
     };

@@ -26,10 +26,15 @@ namespace _5200Final.Controllers
         [ProducesResponseType(400)]
         public IActionResult UploadImage([FromBody] UploadImage Request)
         {
+            if(Request.Image.Contains(',')) Request.Image = Request.Image.Substring(Request.Image.IndexOf(",") + 1, Request.Image.Length - (Request.Image.IndexOf(",") + 1));
+            var imageDataByteArray = Convert.FromBase64String(Request.Image);
+            Console.WriteLine("In Upload");
+            Console.WriteLine(Request.Instructions);
+            Console.WriteLine(Request.Image);
             if (ModelState.IsValid)
             {
                 Console.WriteLine(Request.ToString());
-                Transform photoTransformation = new Transform(Request.Instructions, Request.Image);
+                Transform photoTransformation = new Transform(Request.Instructions, imageDataByteArray);
                 return File(photoTransformation.getImage(), "image/" + photoTransformation.getFormat());
             }
             else return BadRequest();

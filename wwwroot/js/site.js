@@ -55,7 +55,7 @@ function submitForm() {
         var searchIDs = $("input:checkbox:checked").map(function () {
             return $(this).val();
         }).get();
-        console.log(searchIDs);
+        console.log('SearchId:',searchIDs);
 
         var formFields = { Instructions: searchIDs, Image: image };
 
@@ -64,7 +64,6 @@ function submitForm() {
         fetch(uri, {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formFields)

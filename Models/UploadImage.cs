@@ -9,10 +9,9 @@ namespace _5200Final.Models
 {
     public class UploadImage
     {
-        [JsonProperty("Instructions")]
         public string[] Instructions { get; set; }
 
-        [JsonConverter(typeof(Base64FileJsonConverter))]
-        public byte[] Image { get; set; }
+     
+        public string Image { get; set; }
     }
 }

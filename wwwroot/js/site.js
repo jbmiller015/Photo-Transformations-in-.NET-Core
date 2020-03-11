@@ -61,21 +61,17 @@ function submitForm() {
 
         console.log('FormFields:', formFields);
 
-        fetch(uri, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formFields)
+    fetch(uri, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formFields)
+    })
+        .then(response => {
+            document.getElementById("ItemPreview").src = response;
         })
-            .then(response =>
-                response.blob().then(blobResponse => {
-                    data = blobResponse;
-                })
-            .then(data => _display(data))
-            .catch(error => console.error('Failed to uplaod', error))
-
+        .catch(error => {
+            console.error('Failed to uplaod', error);
+        });
     }
-function _display(data) {
-    document.getElementById("ItemPreview").src = data;
-    };

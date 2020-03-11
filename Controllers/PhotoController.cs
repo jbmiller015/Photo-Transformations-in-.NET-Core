@@ -24,20 +24,20 @@ namespace _5200Final.Controllers
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(202)]
         [ProducesResponseType(400)]
-        public IActionResult UploadImage([FromBody] UploadImage Request)
+        public string UploadImage([FromBody] UploadImage Request)
         {
             if(Request.Image.Contains(',')) Request.Image = Request.Image.Substring(Request.Image.IndexOf(",") + 1, Request.Image.Length - (Request.Image.IndexOf(",") + 1));
             var imageDataByteArray = Convert.FromBase64String(Request.Image);
             Console.WriteLine("In Upload");
-            Console.WriteLine(Request.Instructions);
-            Console.WriteLine(Request.Image);
             if (ModelState.IsValid)
             {
                 Console.WriteLine(Request.ToString());
                 Transform photoTransformation = new Transform(Request.Instructions, imageDataByteArray);
-                return File(photoTransformation.getImage(), "image/" + photoTransformation.getFormat());
+                Console.WriteLine(photoTransformation.getFormat());
+                string base64ImageRepresentation = Convert.ToBase64String(photoTransformation.getImage());
+                return("data:image/" + photoTransformation.getFormat() + "; base64" +base64ImageRepresentation);
             }
-            else return BadRequest();
+            else return "Bad Request";
         }
     }
 }

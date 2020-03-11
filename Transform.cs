@@ -18,7 +18,7 @@ namespace _5200Final
             this.Inst = Inst;
             //Not sure if this is needed
             this.ImageData = ImageData;
-            this.Image = new MagickImage(ImageData);
+            Image = new MagickImage(ImageData);
             AnalyzeImage();
             ExInst();
         }

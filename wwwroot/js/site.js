@@ -64,14 +64,18 @@ function submitForm() {
     fetch(uri, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         body: JSON.stringify(formFields)
     })
-        .then(response => {
-            document.getElementById("ItemPreview").src = response;
+    .then((response) => response.json())
+    .then((data) => {
+        console.log('Success:', data);
+        //console.log('data: ', result.data)
+        data = data.substring(1, data.length-1);
+        console.log('stripped:', data);
+        document.getElementById("ItemPreview").src = data;
         })
-        .catch(error => {
-            console.error('Failed to uplaod', error);
-        });
     }
+//document.getElementById("ItemPreview").src = response;

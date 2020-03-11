@@ -35,7 +35,7 @@ namespace _5200Final.Controllers
                 Transform photoTransformation = new Transform(Request.Instructions, imageDataByteArray);
                 Console.WriteLine(photoTransformation.getFormat());
                 string base64ImageRepresentation = Convert.ToBase64String(photoTransformation.getImage());
-                return("data:image/" + photoTransformation.getFormat() + "; base64" +base64ImageRepresentation);
+                return("{data:image/" + photoTransformation.getFormat().ToLower() + ";charset_utf-8;base64, " +base64ImageRepresentation+"}");
             }
             else return "Bad Request";
         }

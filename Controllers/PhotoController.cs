@@ -16,15 +16,15 @@ namespace _5200Final.Controllers
     [ApiController]
     public class PhotoController : Controller
     {
-        //[HttpGet]
-        //public ViewResult Index() => View();
+        private Transform photoTransformation = new Transform();
 
         // POST: api/Photo
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(202)]
+        [ProducesResponseType(200)]
+        [Produces("application/json")]
         [ProducesResponseType(400)]
-        public string UploadImage([FromBody] UploadImage Request)
+        public IActionResult UploadImage([FromBody] UploadImage Request)
         {
             if (Request.Image != null && Request.Instructions != null)
             {
@@ -33,13 +33,17 @@ namespace _5200Final.Controllers
                 var imageDataByteArray = Convert.FromBase64String(Request.Image);
                 if (imageDataByteArray != null && imageDataByteArray.Length > 0)
                 {
-                    Transform photoTransformation = new Transform(Request.Instructions, imageDataByteArray);
-                    string base64ImageRepresentation = Convert.ToBase64String(photoTransformation.getImage());
-                    return ("{data:image/" + photoTransformation.getFormat().ToLower() + ";charset_utf-8;base64, " + base64ImageRepresentation + "}");
+                    var result = (photoTransformation.TransformImage(Request.Instructions, imageDataByteArray));
+                    if(result == "Bad Image")
+                    {
+                        return BadRequest("BadImage");
+                    }
+                    return Ok((photoTransformation.getFormat().ToLower() + result));
                 }
                 else throw new Exception("Unkown File Type");
             }
-            else return "Bad Request";
+            else return BadRequest("No Image Detected");
         }
+        
     }
 }

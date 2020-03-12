@@ -81,10 +81,7 @@ function submitForm() {
     })
     .then((response) => response.json())
     .then((data) => {
-        console.log('Success:', data);
-        //console.log('data: ', result.data)
-        data = data.substring(1, data.length-1);
-        console.log('stripped:', data);
+        console.log('Success:', data);  
         document.getElementById("ItemPreview").src = data;
         document.getElementById("image").style.display = 'block';
         })

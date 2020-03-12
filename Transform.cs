@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
+
 
 namespace _5200Final
 {
@@ -18,20 +18,36 @@ namespace _5200Final
         MagickImage Image;
         public Transform(string[] Inst, byte[] ImageData) {
             this.Inst = Inst;
-            //Not sure if this is needed
             this.ImageData = ImageData;
             Image = new MagickImage(ImageData);
             AnalyzeImage();
             ExInst();
         }
-        public byte[] getImage()
+
+        public Transform()
         {
-            return Image.ToByteArray();
+            Image = new MagickImage();
         }
 
+        public string TransformImage(string[] Instructions, byte[] ImageData){
+            Inst = Instructions;
+            this.ImageData = ImageData;
+            try
+            {
+                Image = new MagickImage(ImageData);
+            }
+            catch (MagickCorruptImageErrorException)
+            {
+                return "Bad Image";
+            }
+            AnalyzeImage();
+            ExInst();
+            return Image.ToBase64();
+        }
+        
         public string getFormat()
         {
-            return Format;
+            return("data:image/" + Format + ";base64,");
         }
         private void AnalyzeImage()
         {

@@ -42,13 +42,9 @@ namespace _5200Final
             }
             AnalyzeImage();
             ExInst();
-            return Image.ToBase64();
+            return ("data:image/" + Format + ";base64,"+ Image.ToBase64());
         }
         
-        public string getFormat()
-        {
-            return("data:image/" + Format + ";base64,");
-        }
         private void AnalyzeImage()
         {
             MagickImageInfo info = new MagickImageInfo();
@@ -57,24 +53,25 @@ namespace _5200Final
         }
         private void ExInst()
         {
-            Console.WriteLine("InEx");
             InstHelper();
-            if (Inst.Contains<string>("FlipHorizontal"))
-                Image.Flop();
-            if (Inst.Contains<string>("FlipVertical"))
-                Image.Flip();
-            if (Inst.Contains<string>("Rotate"))
-                Image.Rotate((long)degrees);
-            if (Inst.Contains<string>("RotateLeft"))
-                Image.Rotate(-90.0);
-            if (Inst.Contains<string>("RotateRight"))
-                Image.Rotate(90.0);
-            if (Inst.Contains<string>("GrayScale"))
-                Image.Grayscale();
-            if (Inst.Contains<string>("Resize"))
-                Image.Resize(xInput, yInput);
-            if (Inst.Contains<string>("Thumbnail"))
-                Image.Thumbnail(125, 125);
+            foreach (string method in Inst) {
+                if (method.Equals("FlipHorizontal"))
+                    Image.Flop();
+                if (method.Equals("FlipVertical"))
+                    Image.Flip();
+                if (method.Equals("Rotate"))
+                    Image.Rotate((long)degrees);
+                if (method.Equals("RotateLeft"))
+                    Image.Rotate(-90.0);
+                if (method.Equals("RotateRight"))
+                    Image.Rotate(90.0);
+                if (method.Equals("GrayScale"))
+                    Image.Grayscale();
+                if (method.Equals("Resize"))
+                    Image.Resize(xInput, yInput);
+                if (method.Equals("Thumbnail"))
+                    Image.Thumbnail(125, 125);
+            }
         }
 
         private void InstHelper()

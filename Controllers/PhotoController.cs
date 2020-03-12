@@ -38,7 +38,7 @@ namespace _5200Final.Controllers
                     {
                         return BadRequest("BadImage");
                     }
-                    return Ok((photoTransformation.getFormat().ToLower() + result));
+                    return Ok(result);
                 }
                 else throw new Exception("Unkown File Type");
             }

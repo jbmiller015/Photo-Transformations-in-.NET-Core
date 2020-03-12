@@ -16,21 +16,23 @@ namespace _5200Final
         private int xInput;
         private int yInput;
         MagickImage Image;
-        public Transform(string[] Inst, byte[] ImageData) {
+
+        //Overloaded Consturctor
+        //Not used in this version
+        /*public Transform(string[] Inst, byte[] ImageData) {
             this.Inst = Inst;
             this.ImageData = ImageData;
             Image = new MagickImage(ImageData);
             AnalyzeImage();
             ExInst();
-        }
+        }*/
 
-        public Transform()
-        {
-            Image = new MagickImage();
-        }
-
+        /**
+         * Drives Transformations
+         */
         public string TransformImage(string[] Instructions, byte[] ImageData){
             Inst = Instructions;
+            Image = new MagickImage();
             this.ImageData = ImageData;
             try
             {
@@ -45,12 +47,19 @@ namespace _5200Final
             return ("data:image/" + Format + ";base64,"+ Image.ToBase64());
         }
         
+        /**
+         * Get Image Type.
+         */
         private void AnalyzeImage()
         {
             MagickImageInfo info = new MagickImageInfo();
             info.Read(ImageData);
-            Format = info.Format.ToString();
+            Format = info.Format.ToString().ToLower();
         }
+        
+        /**
+         * Call Methods associated with instructions in list
+         */
         private void ExInst()
         {
             InstHelper();
@@ -74,6 +83,9 @@ namespace _5200Final
             }
         }
 
+        /**
+         * Pulls specifying information out of Rotate and Resize
+         */
         private void InstHelper()
         {
            for(int i = 0; i < Inst.Length; i++)

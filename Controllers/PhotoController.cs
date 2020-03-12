@@ -28,19 +28,13 @@ namespace _5200Final.Controllers
         {
             if (Request.Image != null && Request.Instructions != null)
             {
-                if (Request.Image.Contains(','))
-                    Request.Image = Request.Image.Substring(Request.Image.IndexOf(",") + 1, Request.Image.Length - (Request.Image.IndexOf(",") + 1));
-                var imageDataByteArray = Convert.FromBase64String(Request.Image);
-                if (imageDataByteArray != null && imageDataByteArray.Length > 0)
+                var result = (photoTransformation.TransformImage(Request.Instructions, Request.Image));
+                if(result == "Bad Image")
                 {
-                    var result = (photoTransformation.TransformImage(Request.Instructions, imageDataByteArray));
-                    if(result == "Bad Image")
-                    {
-                        return BadRequest("BadImage");
-                    }
-                    return Ok(result);
+                    return BadRequest("BadImage");
                 }
-                else throw new Exception("Unkown File Type");
+                return Ok(result);
+                
             }
             else return BadRequest("No Image Detected");
         }

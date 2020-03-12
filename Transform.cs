@@ -30,10 +30,10 @@ namespace _5200Final
         /**
          * Drives Transformations
          */
-        public string TransformImage(string[] Instructions, byte[] ImageData){
+        public string TransformImage(string[] Instructions, string imageString){
             Inst = Instructions;
             Image = new MagickImage();
-            this.ImageData = ImageData;
+            ImageData = cleanImage(imageString);
             try
             {
                 Image = new MagickImage(ImageData);
@@ -47,6 +47,12 @@ namespace _5200Final
             return ("data:image/" + Format + ";base64,"+ Image.ToBase64());
         }
         
+        private byte[] cleanImage(string image)
+        {
+            if (image.Contains(','))
+                image = image.Substring(image.IndexOf(",") + 1, image.Length - (image.IndexOf(",") + 1));
+            return Convert.FromBase64String(image);
+        }
         /**
          * Get Image Type.
          */

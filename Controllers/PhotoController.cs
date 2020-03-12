@@ -26,16 +26,18 @@ namespace _5200Final.Controllers
         [ProducesResponseType(400)]
         public string UploadImage([FromBody] UploadImage Request)
         {
-            if(Request.Image.Contains(',')) Request.Image = Request.Image.Substring(Request.Image.IndexOf(",") + 1, Request.Image.Length - (Request.Image.IndexOf(",") + 1));
-            var imageDataByteArray = Convert.FromBase64String(Request.Image);
-            Console.WriteLine("In Upload");
-            if (ModelState.IsValid)
+            if (Request.Image != null && Request.Instructions != null)
             {
-                Console.WriteLine(Request.ToString());
-                Transform photoTransformation = new Transform(Request.Instructions, imageDataByteArray);
-                Console.WriteLine(photoTransformation.getFormat());
-                string base64ImageRepresentation = Convert.ToBase64String(photoTransformation.getImage());
-                return("{data:image/" + photoTransformation.getFormat().ToLower() + ";charset_utf-8;base64, " +base64ImageRepresentation+"}");
+                if (Request.Image.Contains(','))
+                    Request.Image = Request.Image.Substring(Request.Image.IndexOf(",") + 1, Request.Image.Length - (Request.Image.IndexOf(",") + 1));
+                var imageDataByteArray = Convert.FromBase64String(Request.Image);
+                if (imageDataByteArray != null && imageDataByteArray.Length > 0)
+                {
+                    Transform photoTransformation = new Transform(Request.Instructions, imageDataByteArray);
+                    string base64ImageRepresentation = Convert.ToBase64String(photoTransformation.getImage());
+                    return ("{data:image/" + photoTransformation.getFormat().ToLower() + ";charset_utf-8;base64, " + base64ImageRepresentation + "}");
+                }
+                else throw new Exception("Unkown File Type");
             }
             else return "Bad Request";
         }

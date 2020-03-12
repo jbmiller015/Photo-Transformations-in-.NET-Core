@@ -12,9 +12,11 @@ namespace _5200Final
         private string[] Inst;
         private byte[] ImageData;
         private string Format;
+        private int degrees;
+        private int xInput;
+        private int yInput;
         MagickImage Image;
         public Transform(string[] Inst, byte[] ImageData) {
-            Console.WriteLine("In Transform");
             this.Inst = Inst;
             //Not sure if this is needed
             this.ImageData = ImageData;
@@ -36,55 +38,47 @@ namespace _5200Final
             MagickImageInfo info = new MagickImageInfo();
             info.Read(ImageData);
             Format = info.Format.ToString();
-            Console.WriteLine("Analyzing");
         }
         private void ExInst()
         {
-            Console.WriteLine("In Execute");
-            if (Inst.Contains<string>("FlipHorizontal") || Inst.Contains<string>("FlipVertical"))
-                Flip();
-            if (Inst.Contains<string>("Rotate"))
-                Rotate();
-            if (Inst.Contains<string>("GrayScale"))
-                GrayScale();
-            if (Inst.Contains<string>("Resize"))
-                Resize();
-            if (Inst.Contains<string>("Thumbnail"))
-                Thumbnail();
-        }
-
-        private void Thumbnail()
-        {
-            Image.Thumbnail(200,200);
-        }
-
-        private void Resize()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void GrayScale()
-        {
-            Image.Grayscale();
-        }
-
-        private void Rotate()
-        {
-            if(Inst.Contains<string>("Left"))
-                Image.Rotate(-90.0);
-            if (Inst.Contains<string>("Right"))
-                Image.Rotate(90.0);
-            //else if (Inst.Contains<string>("Rotate {0}", dgr)
-                    Image.Rotate(-90.0);
-            //throw new NotImplementedException();
-        }
-
-        private void Flip()
-        {
-           if(Inst.Contains<string>("FlipVertical"))
-                Image.Flip();
-           if(Inst.Contains<string>("FlipHorizontal"))
+            Console.WriteLine("InEx");
+            InstHelper();
+            if (Inst.Contains<string>("FlipHorizontal"))
                 Image.Flop();
+            if (Inst.Contains<string>("FlipVertical"))
+                Image.Flip();
+            if (Inst.Contains<string>("Rotate"))
+                Image.Rotate((long)degrees);
+            if (Inst.Contains<string>("RotateLeft"))
+                Image.Rotate(-90.0);
+            if (Inst.Contains<string>("RotateRight"))
+                Image.Rotate(90.0);
+            if (Inst.Contains<string>("GrayScale"))
+                Image.Grayscale();
+            if (Inst.Contains<string>("Resize"))
+                Image.Resize(xInput, yInput);
+            if (Inst.Contains<string>("Thumbnail"))
+                Image.Thumbnail(125, 125);
+        }
+
+        private void InstHelper()
+        {
+           for(int i = 0; i < Inst.Length; i++)
+            {
+                if (Inst[i].Contains("Rotate "))
+                {
+                    degrees = Int32.Parse(Inst[i].Substring(Inst[i].IndexOf(":") + 1, Inst[i].Length - (Inst[i].IndexOf(":") + 1)));
+                    Inst[i] = "Rotate";
+                }
+                if (Inst[i].Contains("Resize"))
+                {
+                    xInput = Int32.Parse(Inst[i].Substring(Inst[i].IndexOf(":") + 1, Inst[i].IndexOf("|") - (Inst[i].IndexOf(":") + 1)));
+                    Console.WriteLine(xInput);
+                    yInput = Int32.Parse(Inst[i].Substring(Inst[i].IndexOf("|") +1, Inst[i].Length - (Inst[i].IndexOf("|") + 1)));
+                    Console.WriteLine(yInput);
+                    Inst[i] = "Resize";
+                }
+            }
         }
     }
 }

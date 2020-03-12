@@ -8,6 +8,7 @@ const uri = '/api/Photo';
 function showRotBox(cbox) {
     if (cbox.checked) {
         var input = document.createElement("input");
+        input.id = "rotateInput"
         input.type = "number";
         input.min = "-360";
         input.max = "360";
@@ -21,16 +22,19 @@ function showRotBox(cbox) {
     }
 };
 
+
 function showResBox(cbox) {
     if (cbox.checked) {
         var inputX = document.createElement("input");
+        inputX.id = "xInput"
         inputX.type = "number";
         inputX.min = "0";
-        inputX.max = "999";
+        inputX.max = "9999";
         var inputY = document.createElement("input");
+        inputY.id = "yInput"
         inputY.type = "number";
         inputY.min = "0";
-        inputY.max = "999";
+        inputY.max = "9999";
         var div = document.createElement("div");
         div.id = cbox.name;
         div.innerHTML += "Resize X Y (Pixels)" + inputX.outerHTML + inputY.outerHTML;
@@ -52,7 +56,13 @@ function encodeImageFileAsURL(element) {
 
 function submitForm() {
     const image = reader.result;
-        var searchIDs = $("input:checkbox:checked").map(function () {
+    var searchIDs = $("input:checkbox:checked").map(function () {
+        if ($(this).val() === "Rotate")
+            return $(this).val().concat(" :" + document.getElementById("rotateInput").value.toString());
+        if ($(this).val() === "Resize")
+            return $(this).val().concat(" :" + document.getElementById("xInput").value.toString() +"|"+
+                    document.getElementById("yInput").value.toString());
+        else
             return $(this).val();
         }).get();
         console.log('SearchId:',searchIDs);
@@ -76,6 +86,6 @@ function submitForm() {
         data = data.substring(1, data.length-1);
         console.log('stripped:', data);
         document.getElementById("ItemPreview").src = data;
+        document.getElementById("image").style.display = 'block';
         })
-    }
-//document.getElementById("ItemPreview").src = response;
+}

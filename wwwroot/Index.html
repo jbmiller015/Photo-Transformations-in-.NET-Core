@@ -4,22 +4,33 @@
     <meta charset="UTF-8">
     <title>Image Transformer</title>
     <link rel="stylesheet" href="css/site.css" />
+    <style>
+        div.boxed{
+            flex-shrink: 3;
+            width: 65%;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <form action="javascript:void(0);" method="post" id="photoForm" onsubmit="submitForm();">
+    <h1>Image Transformer</h1>
+    <div class="container" style="width: 100%; overflow: hidden;">
+        <form action="javascript:void(0);" method="post" id="photoForm" style="width: auto; float: left;" onsubmit="submitForm();">
             <div class="imageForm" name="imageForm">
-                <p>Select your Image:</p>
+                <h3>Select your Image:</h3>
                 <input type="file" id="Image" onchange="encodeImageFileAsURL(this)" />
             </div>
             <br>
-            <fieldset>
-                <Legend>Transformation Form</Legend>
-                <p>Select your Transformation(s):</p>
+            <div class="i">
+                <h3>Select your Transformation(s):</h3>
                 <input id="FlipHorizontal" type="checkbox" name="Instructions[0]" value="FlipHorizontal">
                 <label for="Instructions[0]"> Flip Horizontal</label><br><br>
                 <input id="FlipVertical" type="checkbox" name="Instructions[0]" value="FlipVertical">
                 <label for="Instructions[0]"> Flip Vertical</label><br><br>
+                <input id="RotateLeft" type="checkbox" name="Instructions[0]" value="RotateLeft">
+                <label for="Instructions[0]"> Rotate Left</label><br><br>
+                <input id="RotateRight" type="checkbox" name="Instructions[0]" value="RotateRight">
+                <label for="Instructions[0]"> Rotate Right</label><br><br>
                 <input id="Rotate" type="checkbox" name="Instructions[0]" value="Rotate" onclick="showRotBox(this);">
                 <label for="Instructions[0]"> Rotate</label><br>
                 <p id="insertinputs1"></p>
@@ -34,17 +45,21 @@
                 <label for="Instructions[0]"> Rotate Right</label><br><br>
                 <input id="Thumbnail" type="checkbox" name="Instructions[0]" value="Thumbnail">
                 <label for="Instructions[0]"> Export as Thumbnail</label><br><br>
-            </fieldset>
+            </div>
             <div class="submission">
                 <input type="submit" value="Submit" />
             </div>
-        </form>
-        <div style="margin-top:15px">
-            <img id="ItemPreview" >
+        </form>      
+        <div id ="image" class="boxed" style="margin-left: auto">
+            <h3>Transformed Image:</h3>
+            <div class="o">
+                <img id="ItemPreview">
+
+            </div>
         </div>
         <script src="lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src="js/site.js" asp-append-version="true"></script>
     </div>
-    </body>
+</body>
 </html>
 

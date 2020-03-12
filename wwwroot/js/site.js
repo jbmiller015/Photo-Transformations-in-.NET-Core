@@ -56,6 +56,7 @@ function encodeImageFileAsURL(element) {
 
 function submitForm() {
     const image = reader.result;
+    console.log(image);
     var searchIDs = $("input:checkbox:checked").map(function () {
         if ($(this).val() === "Rotate")
             return $(this).val().concat(" :" + document.getElementById("rotateInput").value.toString());
@@ -65,11 +66,9 @@ function submitForm() {
         else
             return $(this).val();
         }).get();
-        console.log('SearchId:',searchIDs);
 
-        var formFields = { Instructions: searchIDs, Image: image };
-
-        console.log('FormFields:', formFields);
+    var formFields = { Instructions: searchIDs, Image: image };
+    
 
     fetch(uri, {
         method: 'POST',
